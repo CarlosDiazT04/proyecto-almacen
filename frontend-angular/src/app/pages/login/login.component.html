@@ -1,0 +1,63 @@
+<div class="login-page">
+  <div class="login-panel">
+    <div class="login-brand">
+      <div class="brand-mark large">PA</div>
+      <div>
+        <h1>Proyecto Almacén</h1>
+        <p>Gestión integral de inventario y operaciones</p>
+      </div>
+    </div>
+    <div class="login-features">
+      <div>
+        <span>✓</span>
+        <div>
+          <strong>Inventario centralizado</strong>
+          <small>Stock, mínimos y disponibilidad en tiempo real.</small>
+        </div>
+      </div>
+      <div>
+        <span>✓</span>
+        <div>
+          <strong>Control de movimientos</strong>
+          <small>Registro de entradas y salidas del almacén.</small>
+        </div>
+      </div>
+      <div>
+        <span>✓</span>
+        <div>
+          <strong>Alertas de inventario</strong>
+          <small>Seguimiento oportuno de productos con stock bajo.</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="login-card-wrap">
+    <form class="login-card form-stack" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="login-card-head">
+        <h2>Iniciar sesión</h2>
+        <p>Ingresa tus credenciales para continuar.</p>
+      </div>
+      <label for="username">
+        Usuario
+        <input id="username" formControlName="username" placeholder="Usuario" autocomplete="username" #userInput />
+      </label>
+      <label for="password">
+        Contraseña
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="••••••••"
+          autocomplete="current-password"
+        />
+      </label>
+      @if (error()) {
+        <div class="form-error" role="alert">{{ error() }}</div>
+      }
+      <button type="submit" class="btn primary full" [disabled]="loading()">
+        {{ loading() ? 'Ingresando...' : 'Ingresar' }}
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+.state-box {
+  background: #fff;
+  border: 1px solid #e1e8ef;
+  border-radius: 14px;
+  padding: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #657587;
+
+  &.empty {
+    color: #84909f;
+  }
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid #d9e5f0;
+  border-top-color: #0b66b3;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.error-box {
+  background: #fff;
+  border: 1px solid #f0cbd0;
+  border-left: 4px solid #c9414e;
+  border-radius: 12px;
+  padding: 18px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+
+  span {
+    color: #6e7886;
+  }
+
+  .btn {
+    margin-left: auto;
+  }
+}

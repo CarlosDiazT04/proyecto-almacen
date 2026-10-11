@@ -1,0 +1,165 @@
+$sidebar-width: 250px;
+$sidebar-width-collapsed: 82px;
+
+.shell {
+  display: grid;
+  grid-template-columns: $sidebar-width 1fr;
+  min-height: 100vh;
+  transition: 0.2s;
+
+  &.sidebar-collapsed {
+    grid-template-columns: $sidebar-width-collapsed 1fr;
+  }
+}
+
+// ---- Sidebar ----
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  background: #102d4e;
+  color: #fff;
+  padding: 18px 14px;
+  display: flex;
+  flex-direction: column;
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 3px 4px 22px;
+
+  > div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  span {
+    font-size: 11px;
+    color: #a9bfd8;
+  }
+}
+
+.nav-item {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #c9d7e6;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  border-radius: 10px;
+  font-weight: 600;
+
+  &:hover,
+  &.active {
+    background: #1a466f;
+    color: #fff;
+  }
+}
+
+.nav-icon {
+  width: 28px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.logout {
+  cursor: pointer;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  border-top: 1px solid #294766;
+  padding-top: 14px;
+}
+
+.user-mini {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 10px 10px;
+
+  span {
+    font-size: 11px;
+    color: #a9bfd8;
+    margin-top: 3px;
+  }
+}
+
+// ---- Main / topbar ----
+.main {
+  min-width: 0;
+}
+
+.topbar {
+  height: 66px;
+  background: #fff;
+  border-bottom: 1px solid #dde5ee;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 14px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.topbar-title {
+  font-weight: 700;
+  color: #30465f;
+}
+
+.topbar-user {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #28a96b;
+}
+
+.content {
+  padding: 28px;
+  max-width: 1500px;
+  margin: auto;
+}
+
+// ---- Responsive ----
+@media (max-width: 850px) {
+  .shell,
+  .shell.sidebar-collapsed {
+    grid-template-columns: $sidebar-width-collapsed 1fr;
+  }
+
+  .brand > div:last-child,
+  .nav-item span:not(.nav-icon),
+  .user-mini {
+    display: none;
+  }
+}
+
+@media (max-width: 620px) {
+  .content {
+    padding: 18px;
+  }
+
+  .topbar-title {
+    display: none;
+  }
+}

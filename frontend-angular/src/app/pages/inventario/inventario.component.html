@@ -1,0 +1,97 @@
+<app-page-header title="Inventario" subtitle="Consulta y administra el stock de los productos.">
+  @if (canWrite) {
+    <button action type="button" class="btn primary" (click)="openNew()">+ Crear inventario</button>
+  }
+</app-page-header>
+
+<div class="toolbar">
+  <input
+    class="search"
+    [value]="search()"
+    (input)="search.set($any($event.target).value)"
+    placeholder="Buscar por SKU o producto..."
+    aria-label="Buscar inventario"
+  />
+  <span class="result-count">{{ filtered().length }} registro(s)</span>
+</div>
+
+@if (loading()) {
+  <app-loading />
+} @else if (error()) {
+  <app-error-box [message]="error()" (retry)="load()" />
+} @else if (filtered().length === 0) {
+  <app-empty />
+} @else {
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Stock actual</th>
+          <th>Reservado</th>
+          <th>Disponible</th>
+          <th>Mínimo</th>
+          <th>Estado</th>
+          @if (canWrite) {
+            <th></th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (i of filtered(); track i.id) {
+          <tr [class.row-warning]="i.stockBajo">
+            <td>
+              <strong>{{ i.producto }}</strong>
+              <small class="cell-sub">{{ i.sku }}</small>
+            </td>
+            <td><b>{{ i.stockActual }}</b></td>
+            <td>{{ i.stockReservado }}</td>
+            <td>{{ i.stockDisponible }}</td>
+            <td>{{ i.stockMinimo }}</td>
+            <td>
+              <span class="badge" [class.danger]="i.stockBajo" [class.success]="!i.stockBajo">
+                {{ i.stockBajo ? 'STOCK BAJO' : 'NORMAL' }}
+              </span>
+            </td>
+            @if (canWrite) {
+              <td class="actions"><button type="button" class="link-btn" (click)="openEdit(i)">Editar</button></td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}
+
+<app-modal [open]="modalOpen()" [title]="editing() ? 'Editar inventario' : 'Crear inventario'" (closed)="modalOpen.set(false)">
+  <form class="form-grid" [formGroup]="form" (ngSubmit)="save()">
+    <label class="span-2" for="i-prod">
+      Producto
+      <select id="i-prod" formControlName="productoId">
+        <option [ngValue]="null">Seleccionar producto</option>
+        @for (p of availableProducts(); track p.id) {
+          <option [ngValue]="p.id">{{ p.sku }} · {{ p.nombre }}</option>
+        }
+      </select>
+    </label>
+    <label for="i-actual">
+      Stock actual
+      <input id="i-actual" type="number" min="0" step="1" formControlName="stockActual" />
+    </label>
+    <label for="i-res">
+      Stock reservado
+      <input id="i-res" type="number" min="0" step="1" formControlName="stockReservado" />
+    </label>
+    <label for="i-min">
+      Stock mínimo
+      <input id="i-min" type="number" min="0" step="1" formControlName="stockMinimo" />
+    </label>
+    <label class="checkbox">
+      <input type="checkbox" formControlName="activo" /> Activo
+    </label>
+    <div class="form-actions span-2">
+      <button type="button" class="btn secondary" (click)="modalOpen.set(false)">Cancelar</button>
+      <button type="submit" class="btn primary" [disabled]="saving()">{{ saving() ? 'Guardando...' : 'Guardar' }}</button>
+    </div>
+  </form>
+</app-modal>

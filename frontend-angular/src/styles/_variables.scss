@@ -1,0 +1,23 @@
+// Design tokens compartidos por estilos globales y de componentes.
+$font-family: Inter, 'Segoe UI', Arial, sans-serif;
+
+$color-text: #152233;
+$color-bg: #f3f6fa;
+$color-surface: #fff;
+$color-border: #e0e7ef;
+$color-border-input: #cbd6e2;
+$color-muted: #7e8a99;
+$color-primary: #0b66b3;
+$color-primary-dark: #095797;
+$color-sidebar: #102d4e;
+
+// Puntos de quiebre (max-width)
+$bp-lg: 1100px;
+$bp-md: 850px;
+$bp-sm: 620px;
+
+@mixin max($width) {
+  @media (max-width: $width) {
+    @content;
+  }
+}

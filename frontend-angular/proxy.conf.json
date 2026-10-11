@@ -1,0 +1,8 @@
+{
+  "/auth-service":      { "target": "http://localhost:8080", "secure": false },
+  "/catalog-service":   { "target": "http://localhost:8080", "secure": false },
+  "/inventory-service": { "target": "http://localhost:8080", "secure": false },
+  "/movement-service":  { "target": "http://localhost:8080", "secure": false },
+  "/alert-service":     { "target": "http://localhost:8080", "secure": false },
+  "/actuator":          { "target": "http://localhost:8080", "secure": false }
+}

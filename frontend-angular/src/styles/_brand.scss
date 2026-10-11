@@ -1,0 +1,19 @@
+// Marca "PA": usada en el sidebar y en el login.
+.brand-mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: #1f73c9;
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+
+  &.large {
+    width: 62px;
+    height: 62px;
+    border-radius: 16px;
+    font-size: 22px;
+  }
+}

@@ -1,0 +1,9 @@
+// Estilos globales compartidos. Los estilos específicos viven junto a cada componente (*.component.scss).
+@use 'styles/base';
+@use 'styles/brand';
+@use 'styles/buttons';
+@use 'styles/forms';
+@use 'styles/cards';
+@use 'styles/tables';
+@use 'styles/badges';
+@use 'styles/toolbar';
