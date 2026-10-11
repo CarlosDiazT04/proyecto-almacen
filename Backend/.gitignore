@@ -1,0 +1,23 @@
+# Build outputs
+**/target/
+
+# IDEs
+**/.idea/
+*.iml
+.vscode/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+**/application-local.properties
+**/application-secrets.properties
+
+# Logs / OS
+*.log
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
