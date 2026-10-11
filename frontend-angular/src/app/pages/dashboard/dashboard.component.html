@@ -1,0 +1,76 @@
+@if (error()) {
+  <app-error-box [message]="error()" (retry)="load()" />
+} @else if (stats(); as s) {
+  <app-page-header title="Dashboard" subtitle="Resumen operativo del almacén.">
+    <button action type="button" class="btn secondary" (click)="load()">Actualizar</button>
+  </app-page-header>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-icon">▦</div>
+      <div><span>Productos activos</span><strong>{{ s.activos }}</strong></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon">▤</div>
+      <div><span>Stock total</span><strong>{{ s.stock }}</strong></div>
+    </div>
+    <div class="kpi-card" [class.warning]="s.low > 0">
+      <div class="kpi-icon">!</div>
+      <div><span>Stock bajo</span><strong>{{ s.low }}</strong></div>
+    </div>
+    <div class="kpi-card" [class.danger]="s.pending > 0">
+      <div class="kpi-icon">⚑</div>
+      <div><span>Alertas pendientes</span><strong>{{ s.pending }}</strong></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon">S/</div>
+      <div><span>Valor estimado</span><strong>{{ s.value | money }}</strong></div>
+    </div>
+  </div>
+
+  <div class="dashboard-grid">
+    <div class="card">
+      <div class="card-head">
+        <h3>Estado del inventario</h3>
+        <span>{{ data()?.inventarios?.length }} registros</span>
+      </div>
+      <div class="stock-list">
+        @for (i of stockRows(); track i.id) {
+          <div class="stock-row">
+            <div>
+              <strong>{{ i.producto }}</strong>
+              <small>{{ i.sku }}</small>
+            </div>
+            <div class="progress"><span [style.width.%]="i.pct" [class.low]="i.stockBajo"></span></div>
+            <b>{{ i.stockActual }}</b>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h3>Últimos movimientos</h3>
+        <span>Actividad reciente</span>
+      </div>
+      <div class="activity-list">
+        @for (m of recentMovements(); track m.id) {
+          <div class="activity">
+            <span class="movement-dot" [class.entrada]="m.tipo === 'ENTRADA'" [class.salida]="m.tipo === 'SALIDA'">
+              {{ m.tipo === 'ENTRADA' ? '↓' : '↑' }}
+            </span>
+            <div>
+              <strong>{{ m.producto || 'Producto ' + m.productoId }}</strong>
+              <small>{{ m.tipo }} · {{ m.cantidad }} unidad(es) · {{ m.fechaMovimiento | dateTime }}</small>
+            </div>
+            <span class="badge" [class.success]="m.estado === 'PROCESADO'" [class.danger]="m.estado !== 'PROCESADO'">
+              {{ m.estado }}
+            </span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+} @else {
+  <app-loading />
+}

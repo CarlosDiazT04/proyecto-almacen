@@ -1,0 +1,85 @@
+@use 'variables' as *;
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+
+  @include max($bp-sm) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-grid label,
+.form-stack label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #34485f;
+}
+
+.form-grid input,
+.form-grid select,
+.form-grid textarea,
+.form-stack input {
+  border: 1px solid $color-border-input;
+  border-radius: 8px;
+  padding: 10px 11px;
+  background: #fff;
+  color: #16283e;
+
+  &:focus {
+    outline: 2px solid #c8e1f6;
+    border-color: #5c9ed3;
+  }
+
+  &.ng-invalid.ng-touched {
+    border-color: #c9414e;
+  }
+}
+
+.form-grid small,
+.form-stack small {
+  font-weight: 400;
+  color: #7a8796;
+}
+
+.span-2 {
+  grid-column: span 2;
+
+  @include max($bp-sm) {
+    grid-column: span 1;
+  }
+}
+
+.checkbox {
+  flex-direction: row !important;
+  align-items: center;
+
+  input {
+    width: auto;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.form-error {
+  background: #fdecee;
+  color: #a42a37;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+}

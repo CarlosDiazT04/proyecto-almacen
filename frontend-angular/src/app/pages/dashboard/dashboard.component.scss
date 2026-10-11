@@ -1,0 +1,157 @@
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.kpi-card {
+  background: #fff;
+  border: 1px solid #e1e8ef;
+  border-radius: 14px;
+  padding: 17px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  span {
+    display: block;
+    color: #788697;
+    font-size: 12px;
+  }
+
+  strong {
+    display: block;
+    font-size: 24px;
+    margin-top: 4px;
+  }
+
+  &.warning .kpi-icon {
+    background: #fff2d6;
+    color: #99620b;
+  }
+
+  &.danger .kpi-icon {
+    background: #fde9eb;
+    color: #b22633;
+  }
+}
+
+.kpi-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #edf5fc;
+  display: grid;
+  place-items: center;
+  color: #0b66b3;
+  font-weight: 800;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 18px;
+}
+
+.stock-list,
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stock-row {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) 1fr 40px;
+  gap: 14px;
+  align-items: center;
+
+  > div:first-child {
+    display: flex;
+    flex-direction: column;
+  }
+
+  small {
+    color: #8290a0;
+  }
+}
+
+.progress {
+  height: 8px;
+  background: #edf1f5;
+  border-radius: 999px;
+  overflow: hidden;
+
+  span {
+    display: block;
+    height: 100%;
+    background: #2e8acb;
+
+    &.low {
+      background: #d9545d;
+    }
+  }
+}
+
+.activity {
+  display: grid;
+  grid-template-columns: 38px 1fr auto;
+  gap: 10px;
+  align-items: center;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  small {
+    color: #8290a0;
+  }
+}
+
+.movement-dot {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+
+  &.entrada {
+    background: #e6f6ee;
+    color: #177148;
+  }
+
+  &.salida {
+    background: #fff0dc;
+    color: #a2670b;
+  }
+}
+
+@media (max-width: 1100px) {
+  .kpi-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 850px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .kpi-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stock-row {
+    grid-template-columns: 1fr 60px;
+
+    .progress {
+      display: none;
+    }
+  }
+}

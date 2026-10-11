@@ -1,0 +1,5 @@
+<div class="toast-stack" aria-live="polite">
+  @for (t of toasts(); track t.id) {
+    <div class="toast" [class.error]="t.type === 'error'">{{ t.message }}</div>
+  }
+</div>

@@ -1,0 +1,74 @@
+<app-page-header title="Alertas" subtitle="Seguimiento de alertas de inventario.">
+  <button action type="button" class="btn secondary" (click)="load()" [disabled]="loading()">Actualizar</button>
+</app-page-header>
+
+<div class="toolbar">
+  <div class="segmented" role="group" aria-label="Filtrar alertas">
+    @for (f of filtros; track f.value) {
+      <button type="button" [class.active]="filter() === f.value" (click)="filter.set(f.value)">{{ f.label }}</button>
+    }
+  </div>
+  <span class="result-count">{{ filtered().length }} alerta(s)</span>
+</div>
+
+@if (loading()) {
+  <app-loading />
+} @else if (error()) {
+  <app-error-box [message]="error()" (retry)="load()" />
+} @else if (filtered().length === 0) {
+  <app-empty text="No hay alertas para este filtro." />
+} @else {
+  <div class="alert-grid">
+    @for (a of filtered(); track a.id) {
+      <div class="alert-card" [class.pending]="a.estado === 'PENDIENTE'">
+        <div class="alert-card-top">
+          <span class="alert-symbol">!</span>
+          <div>
+            <strong>{{ a.producto }}</strong>
+            <small>{{ a.sku }}</small>
+          </div>
+          <span class="badge" [class.danger]="a.estado === 'PENDIENTE'" [class.success]="a.estado === 'ATENDIDA'">
+            {{ a.estado }}
+          </span>
+        </div>
+        <p>{{ a.mensaje }}</p>
+        <div class="alert-meta">
+          <span>Stock: <b>{{ a.stockActual }}</b></span>
+          <span>Mínimo: <b>{{ a.stockMinimo }}</b></span>
+          <span>{{ a.fechaAlerta | dateTime }}</span>
+        </div>
+        @if (a.estado === 'ATENDIDA') {
+          <div class="attended-meta">Atendida {{ a.fechaAtencion | dateTime }}</div>
+        }
+        @if (a.estado === 'PENDIENTE' && canAttend) {
+          <button type="button" class="btn secondary full" (click)="selected.set(a)">Marcar como atendida</button>
+        }
+      </div>
+    }
+  </div>
+}
+
+<app-modal [open]="!!selected()" title="Atender alerta" [width]="460" (closed)="selected.set(null)">
+  <form class="form-stack" [formGroup]="form" (ngSubmit)="attend()">
+    <p>Confirma la atención de la alerta de <strong>{{ selected()?.producto }}</strong>.</p>
+    @if (needsOperatorId) {
+      <label for="a-resp">
+        Responsable
+        <input
+          id="a-resp"
+          type="number"
+          min="1"
+          step="1"
+          formControlName="usuarioId"
+          placeholder="Identificador del responsable"
+        />
+      </label>
+    }
+    <div class="form-actions">
+      <button type="button" class="btn secondary" (click)="selected.set(null)">Cancelar</button>
+      <button type="submit" class="btn primary" [disabled]="saving()">
+        {{ saving() ? 'Guardando...' : 'Confirmar atención' }}
+      </button>
+    </div>
+  </form>
+</app-modal>

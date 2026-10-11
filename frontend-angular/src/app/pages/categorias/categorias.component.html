@@ -1,0 +1,82 @@
+<app-page-header title="Categorías" subtitle="Clasificación del catálogo de productos.">
+  @if (canWrite) {
+    <button action type="button" class="btn primary" (click)="openNew()">+ Nueva categoría</button>
+  }
+</app-page-header>
+
+<div class="toolbar">
+  <input
+    class="search"
+    [value]="search()"
+    (input)="search.set($any($event.target).value)"
+    placeholder="Buscar categoría..."
+    aria-label="Buscar categorías"
+  />
+  <span class="result-count">{{ filtered().length }} categoría(s)</span>
+</div>
+
+@if (loading()) {
+  <app-loading />
+} @else if (error()) {
+  <app-error-box [message]="error()" (retry)="load()" />
+} @else if (filtered().length === 0) {
+  <app-empty />
+} @else {
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Estado</th>
+          @if (canWrite) {
+            <th></th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (c of filtered(); track c.id) {
+          <tr>
+            <td>{{ c.id }}</td>
+            <td><strong>{{ c.nombre }}</strong></td>
+            <td>{{ c.descripcion || '—' }}</td>
+            <td>
+              <span class="badge" [class.success]="c.activo" [class.muted]="!c.activo">
+                {{ c.activo ? 'ACTIVA' : 'INACTIVA' }}
+              </span>
+            </td>
+            @if (canWrite) {
+              <td class="actions"><button type="button" class="link-btn" (click)="openEdit(c)">Editar</button></td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}
+
+<app-modal
+  [open]="modalOpen()"
+  [title]="editing() ? 'Editar categoría' : 'Nueva categoría'"
+  [width]="520"
+  (closed)="modalOpen.set(false)"
+>
+  <form class="form-grid" [formGroup]="form" (ngSubmit)="save()">
+    <label class="span-2" for="c-nombre">
+      Nombre
+      <input id="c-nombre" formControlName="nombre" />
+    </label>
+    <label class="span-2" for="c-desc">
+      Descripción
+      <textarea id="c-desc" rows="3" formControlName="descripcion"></textarea>
+    </label>
+    <label class="checkbox span-2">
+      <input type="checkbox" formControlName="activo" /> Categoría activa
+    </label>
+    <div class="form-actions span-2">
+      <button type="button" class="btn secondary" (click)="modalOpen.set(false)">Cancelar</button>
+      <button type="submit" class="btn primary" [disabled]="saving()">{{ saving() ? 'Guardando...' : 'Guardar' }}</button>
+    </div>
+  </form>
+</app-modal>

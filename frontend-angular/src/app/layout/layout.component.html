@@ -1,0 +1,66 @@
+<div class="shell" [class.sidebar-collapsed]="collapsed()">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">PA</div>
+      @if (!collapsed()) {
+        <div>
+          <strong>Proyecto Almacén</strong>
+          <span>Control de Inventario</span>
+        </div>
+      }
+    </div>
+
+    <nav>
+      @for (item of nav; track item.to) {
+        <a
+          class="nav-item"
+          [routerLink]="item.to"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: item.to === '/' }"
+          [attr.aria-label]="item.label"
+        >
+          <span class="nav-icon">{{ item.icon }}</span>
+          @if (!collapsed()) {
+            <span>{{ item.label }}</span>
+          }
+        </a>
+      }
+    </nav>
+
+    <div class="sidebar-footer">
+      @if (!collapsed()) {
+        <div class="user-mini">
+          <strong>{{ auth.user()?.nombre }}</strong>
+          <span>{{ auth.roles().join(', ') }}</span>
+        </div>
+      }
+      <button type="button" class="nav-item logout" (click)="auth.logout()" aria-label="Cerrar sesión">
+        <span class="nav-icon">↪</span>
+        @if (!collapsed()) {
+          <span>Cerrar sesión</span>
+        }
+      </button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button
+        type="button"
+        class="icon-button"
+        (click)="toggle()"
+        [attr.aria-label]="collapsed() ? 'Expandir menú' : 'Colapsar menú'"
+      >
+        {{ collapsed() ? '☰' : '≡' }}
+      </button>
+      <div class="topbar-title">Sistema de Gestión de Almacén</div>
+      <div class="topbar-user">
+        <span class="status-dot"></span>
+        {{ auth.user()?.username }}
+      </div>
+    </header>
+    <section class="content">
+      <router-outlet />
+    </section>
+  </main>
+</div>

@@ -1,0 +1,38 @@
+@use 'variables' as *;
+
+:root {
+  font-family: $font-family;
+  color: $color-text;
+  background: $color-bg;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+code {
+  background: #f0f4f8;
+  padding: 3px 6px;
+  border-radius: 6px;
+}
+
+.full {
+  width: 100%;
+}

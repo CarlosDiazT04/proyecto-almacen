@@ -1,0 +1,99 @@
+<app-page-header title="Movimientos" subtitle="Consulta y registra las entradas y salidas de inventario.">
+  @if (canWrite) {
+    <button action type="button" class="btn primary" (click)="openNew()">+ Registrar movimiento</button>
+  }
+</app-page-header>
+
+<div class="toolbar">
+  <input
+    class="search"
+    [value]="search()"
+    (input)="search.set($any($event.target).value)"
+    placeholder="Buscar por producto, tipo o referencia..."
+    aria-label="Buscar movimientos"
+  />
+  <span class="result-count">{{ filtered().length }} movimiento(s)</span>
+</div>
+
+@if (loading()) {
+  <app-loading />
+} @else if (error()) {
+  <app-error-box [message]="error()" (retry)="load()" />
+} @else if (filtered().length === 0) {
+  <app-empty />
+} @else {
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Producto</th>
+          <th>Tipo</th>
+          <th>Cantidad</th>
+          <th>Motivo</th>
+          <th>Referencia</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (m of filtered(); track m.id) {
+          <tr>
+            <td>{{ m.fechaMovimiento | dateTime }}</td>
+            <td>
+              <strong>{{ m.producto || 'Producto ' + m.productoId }}</strong>
+              <small class="cell-sub">{{ m.sku || '—' }}</small>
+            </td>
+            <td>
+              <span class="badge" [class.info]="m.tipo === 'ENTRADA'" [class.warning]="m.tipo !== 'ENTRADA'">{{ m.tipo }}</span>
+            </td>
+            <td><b>{{ m.cantidad }}</b></td>
+            <td>{{ m.motivo || '—' }}</td>
+            <td><code>{{ m.referencia || '—' }}</code></td>
+            <td>
+              <span class="badge" [class.success]="m.estado === 'PROCESADO'" [class.danger]="m.estado !== 'PROCESADO'">
+                {{ m.estado }}
+              </span>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}
+
+<app-modal [open]="modalOpen()" title="Registrar movimiento" (closed)="modalOpen.set(false)">
+  <form class="form-grid" [formGroup]="form" (ngSubmit)="save()">
+    <label class="span-2" for="m-prod">
+      Producto
+      <select id="m-prod" formControlName="productoId">
+        <option [ngValue]="null">Seleccionar producto</option>
+        @for (p of activeProductos(); track p.id) {
+          <option [ngValue]="p.id">{{ p.sku }} · {{ p.nombre }}</option>
+        }
+      </select>
+    </label>
+    <label for="m-tipo">
+      Tipo
+      <select id="m-tipo" formControlName="tipo">
+        <option value="ENTRADA">ENTRADA</option>
+        <option value="SALIDA">SALIDA</option>
+      </select>
+    </label>
+    <label for="m-cant">
+      Cantidad
+      <input id="m-cant" type="number" min="1" step="1" formControlName="cantidad" />
+    </label>
+    <label class="span-2" for="m-motivo">
+      Motivo
+      <input id="m-motivo" formControlName="motivo" placeholder="Ej. Compra, devolución, entrega..." />
+    </label>
+    <label class="span-2" for="m-ref">
+      Referencia
+      <input id="m-ref" formControlName="referencia" placeholder="Ej. OC-2026-001" />
+    </label>
+    <div class="form-actions span-2">
+      <button type="button" class="btn secondary" (click)="modalOpen.set(false)">Cancelar</button>
+      <button type="submit" class="btn primary" [disabled]="saving()">{{ saving() ? 'Procesando...' : 'Registrar' }}</button>
+    </div>
+  </form>
+</app-modal>
