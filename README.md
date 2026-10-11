@@ -251,4 +251,4 @@ Como mejoras futuras se consideran:
 
 ## Autor
 
-Carlos Diaz
+Grupo 5
